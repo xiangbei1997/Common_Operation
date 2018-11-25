@@ -1,0 +1,252 @@
+今天，GitHub已是：
+
+一个拥有143万开发者的社区。其中不乏Linux发明者Torvalds这样的顶级黑客，以及Rails创始人DHH这样的年轻极客。
+这个星球上最流行的开源托管服务。目前已托管431万git项目，不仅越来越多知名开源项目迁入GitHub，比如Ruby on Rails、jQuery、Ruby、Erlang/OTP；近三年流行的开源库往往在GitHub首发，例如：BootStrap、Node.js、CoffeScript等。
+
+
+Liunx上安装git
+先查看git存不存在
+& git
+The program 'git' is currently not installed. You can install it by typing:
+不存在
+ --- sudo apt-get install git 
+直接直接安装git
+
+
+windos下直接去官网下载一路next --  就OK了
+
+创建git本地存储
+
+创建一个git目录用来存储git工作区的文件
+& mkdir  first_git
+
+进入first_git
+& cd first_git
+
+创建一个新的git仓库
+&git init
+
+然后再里写文件
+vim first_git_fild.txt
+
+添加git文件进入缓存区
+$ git add first_git_fild.txt
+
+$ git commit -m '写你上这个文件进入存储区的说明'
+
+查看当前工作区的文件情况
+$git status 
+
+虽然Git告诉我们first_git_file.txt被修改了，但如果能看看具体修改了什么内容，自然是很好的。比如你休假两周从国外回来，第一天上班时，已经记不清上次怎么修改的readme.txt，所以，需要用git diff这个命令看看：　　
+$ git diff first_git_file.txt
+
+当然了，在实际工作中，我们脑子里怎么可能记得一个几千行的文件每次都改了什么内容，不然要版本控制系统干什么。版本控制系统肯定有某个命令可以告诉我们历史记录，在Git中，我们用git log命令查看：
+$ git log
+
+git log命令显示从最近到最远的提交日志，我们可以看到4次提交，最近的一次是add new content，上一次是update again，最早的一次是commit my first git file。 如果嫌输出信息太多，看得眼花缭乱的，可以试试加上--pretty=oneline参数：　　
+$ git log --pretty=oneline
+
+当前版本回滚
+$ git reset --hard HEAD^
+
+回滚到指定的版本
+git reset --hard 4459657
+
+查看所有版本操作
+$ git reflog
+
+文件没有提交到缓存区的时候可以丢弃工作区的修改：　　
+$ git checkout -- readme.md
+
+Git同样告诉我们，用命令git reset HEAD file可以把暂存区的修改撤销掉（unstage），重新放回工作区：
+$ git reset HEAD readme.md
+
+ 删除操作
+$ rm test.txt
+
+现在你有两个选择，一是确实要从版本库中删除该文件，那就用命令git rm删掉，并且git commit：
+x$ git rm test.txt
+
+现在，文件就从版本库中被删除了。
+另一种情况是删错了，因为版本库里还有呢，所以可以很轻松地把误删的文件恢复到最新版本：
+$ git checkout -- test.txt
+
+
+
+克隆github上的
+$ git clone git@github.com:triaquae/gitskills.git
+Cloning into 'gitskills'...
+Warning: Permanently added the RSA host key for IP address '192.30.253.112' to the list of known hosts.
+remote: Counting objects: 3, done.
+remote: Total 3 (delta 0), reused 0 (delta 0), pack-reused 0
+Receiving objects: 100% (3/3), done.
+Checking connectivity... done.
+ 
+$ cd gitskills/  #进入刚clone下来的目录
+
+首先，我们创建dev分支，然后切换到dev分支：
+$Git checkout -b dev
+
+git checkout命令加上-b参数表示创建并切换，相当于以下两条命令：
+
+$ git branch dev
+$ git checkout dev
+Switched to branch 'dev'
+
+
+然后，用git branch命令查看当前分支：
+
+$ git branch
+* dev
+  master
+
+然后提交：
+
+$ git add readme.txt
+$ git commit -m "branch test"
+[dev fec145a] branch test
+ 1 file changed, 1 insertion(+)
+
+
+现在，dev分支的工作完成，我们就可以切换回master分支：
+$ git checkout master
+Switched to branch 'master'
+
+
+现在，我们把dev分支的工作成果合并到master分支上：
+$ git merge dev
+Updating d17efd8..fec145a
+Fast-forward
+ readme.txt |    1 +
+ 1 file changed, 1 insertion(+)
+
+合并完成后，就可以放心地删除dev分支了：
+$ git branch -d dev
+Deleted branch dev (was fec145a).
+
+
+人生不如意之事十之八九，合并分支往往也不是一帆风顺的。
+
+准备新的feature1分支，继续我们的新分支开发：
+
+$ git checkout -b feature1
+Switched to a new branch 'feature1'
+修改readme.txt最后一行，改为：
+
+added this line from branch feature 1
+在feature1分支上提交：
+
+$ git add readme.txt 
+$ git commit -m "add feature"
+[feature1 75a857c] AND simple
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+切换到master分支：
+
+$ git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 1 commit.
+Git还会自动提示我们当前master分支比远程的master分支要超前1个提交。
+
+在master分支上把readme.txt文件的最后一行改为：
+
+added this line from master
+提交：
+
+$ git add readme.txt 
+$ git commit -m "master update"
+[master 400b400] & simple
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+现在，master分支和feature1分支各自都分别有新的提交，变成了这样：
+
+
+
+软件开发中，bug就像家常便饭一样。有了bug就需要修复，在Git中，由于分支是如此的强大，所以，每个bug都可以通过一个新的临时分支来修复，修复后，合并分支，然后将临时分支删除。
+
+当你接到一个修复一个代号101的bug的任务时，很自然地，你想创建一个分支issue-101来修复它，但是，等等，当前正在dev上进行的工作还没有提交：
+
+并不是你不想提交，而是工作只进行到一半，还没法提交，预计完成还需1天时间。但是，必须在两个小时内修复该bug，怎么办？
+
+幸好，Git还提供了一个stash功能，可以把当前工作现场“储藏”起来，等以后恢复现场后继续工作：
+$ git stash
+Saved working directory and index state WIP on dev: 6224937 add merge
+HEAD is now at 6224937 add merge
+
+
+现在，用git status查看工作区，就是干净的（除非有没有被Git管理的文件），因此可以放心地创建分支来修复bug。
+
+首先确定要在哪个分支上修复bug，假定需要在master分支上修复，就从master创建临时分支：
+
+$ git checkout master
+Switched to branch 'master'
+Your branch is ahead of 'origin/master' by 6 commits.
+$ git checkout -b issue-101
+Switched to a new branch 'issue-101'
+
+
+作区是干净的，刚才的工作现场存到哪去了？用git stash list命令看看：
+
+1
+2
+$ git stash list
+stash@{0}: WIP on dev: 6224937 add merge
+工作现场还在，Git把stash内容存在某个地方了，但是需要恢复一下，有两个办法：
+
+一是用git stash apply恢复，但是恢复后，stash内容并不删除，你需要用git stash drop来删除；
+
+另一种方式是用git stash pop，恢复的同时把stash内容也删了：
+
+$ git stash pop
+# On branch dev
+# Changes to be committed:
+#   (use "git reset HEAD <file>..." to unstage)
+#
+#       new file:   hello.py
+#
+# Changes not staged for commit:
+#   (use "git add <file>..." to update what will be committed)
+#   (use "git checkout -- <file>..." to discard changes in working directory)
+#
+#       modified:   readme.txt
+#
+Dropped refs/stash@{0} (f624f8e5f082f2df2bed8a4e09c12fd2943bdd40)
+
+再用git stash list查看，就看不到任何stash内容了：
+
+$ git stash list
+你可以多次stash，恢复的时候，先用git stash list查看，然后恢复指定的stash，用命令：
+
+$ git stash apply stash@{0}
+
+
+
+当你从远程仓库克隆时，实际上Git自动把本地的master分支和远程的master分支对应起来了，并且，远程仓库的默认名称是origin。
+
+要查看远程库的信息，用git remote：
+
+
+$ git remote
+origin
+或者，用git remote -v显示更详细的信息：
+
+$ git remote -v
+origin  git@github.com:triaquae/gitskills.git (fetch)
+origin  git@github.com:triaquae/gitskills.git (push)　　
+
+
+推送分支，就是把该分支上的所有本地提交推送到远程库。推送时，要指定本地分支，这样，Git就会把该分支推送到远程库对应的远程分支上：
+
+$ git push origin master
+如果要推送其他分支，比如dev，就改成：
+
+$ git push origin dev
+但是，并不是一定要把本地分支往远程推送，那么，哪些分支需要推送，哪些不需要呢？
+
+master分支是主分支，因此要时刻与远程同步；
+
+dev分支是开发分支，团队所有成员都需要在上面工作，所以也需要与远程同步；
+
+bug分支只用于在本地修复bug，就没必要推到远程了，除非老板要看看你每周到底修复了几个bug；
+
+feature分支是否推到远程，取决于你是否和你的小伙伴合作在上面开发。
+
+总之，就是在Git中，分支完全可以在本地自己藏着玩，是否推送，视你的心情而定！
