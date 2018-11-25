@@ -1,0 +1,15 @@
+ubuntu 安装pip3遇到的问题及解决方案
+发布时间：2018-01-19 来源：网络 上传者：用户
+关键字: 遇到 解决方案 安装 Ubuntu 问题 pip3
+发表文章
+摘要：python-setuptools:依赖:python-pkg-resources(=3.3-1ubuntu2)但是3.3-1ubuntu1正要被安装【1】python-setuptools:依赖:python-pkg-resources(=3.3-1ubuntu2)但是3.3-1ubuntu1正要被安装解决解决方案:apt-getpurgepython3-pkg-resourcesapt-get-finstall然后再继续安装
+python-setuptools : 依赖: python-pkg-resources (= 3.3-1ubuntu2) 但是 3.3-1ubuntu1 正要被安装
+【1】 
+python-setuptools : 依赖: python-pkg-resources (= 3.3-1ubuntu2) 但是 3.3-1ubuntu1 正要被安装 
+解决
+解决方案:
+apt-get purge python3-pkg-resources 
+apt-get -f install
+然后再继续安装s
+
+

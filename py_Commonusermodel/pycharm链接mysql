@@ -1,0 +1,68 @@
+需要导入的文件
+
+import mysqldb ,这是mysql数据库
+import mysql，这是msql数据库
+import mysqlclient ，这是用来控制mysql数据库的m
+import pymysql ，这是用来链接pytho用来链接mysql的
+
+
+
+在migtations 文件中修改pycharm所用的源生mysql语句
+import pymysql	
+pymysql.install_as_MySQLdb()
+
+
+
+需要修改的seting的路径
+DATABASES = {
+    'default': {	
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'Django',
+        'USER': 'root',
+        'PASSWORD': '123456',
+        'HOST': '',
+        'PORT': '3306',
+    }
+}
+
+
+
+INSTALLED_APPS = [
+    'django.contrib.admin',
+    'django.contrib.auth',
+    'django.contrib.contenttypes',
+    'django.contrib.sessions',
+    'django.contrib.messages',
+    'django.contrib.staticfiles',
+    'mysqlApp'
+     这里注意需要添加一个APP的文件一共我们以后需要来使用塔里引入文件	
+]
+
+
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR,'static'),
+)
+手动添加静态目录
+
+
+
+在视图中引入 app目录下的models来给某一个表进行添加或者删除数据
+
+
+from django.db import models
+这里这个引入的文件是自带的
+
+# Create your models here.
+
+class Book(models.Model):
+这是使用orm里的m来创建一个表，就是简单化了mysql，当然这是我们使用pymysql跟mysqlclident来控制的
+    name = models.CharField(max_length=20)
+    age = models.IntegerField()
+
+
+
+
+最后就是把我们写的models文件生成一个mysql可以认识的文件
+python3 manage.py makemigrations 
+最后最后就是添加数据进数据库
+python3 manage.py migrate

@@ -1,0 +1,18 @@
+生成mysql能识别的代码 python3 manage.py makemigrations 
+添加到mysql里  python3 manage.py migrate 
+
+创建admin用户 python manage.py createsuperuser
+
+
+
+crm  名称 mengkai 密码 123455  名称 xiangbei 密码 meng2014.  名称 mengkaiwoaini 密码 mengkaiwoaini8
+
+
+
+
+SELECT CONCAT('drop table ',table_name,';') FROM information_schema.`TABLES` WHERE table_schema='CrazyEye';
+create database CrazyEye DEFAULT CHARACTER SET gbk COLLATE gbk_chinese_ci;
+create database CrazyEye DEFAULT CHARACTER SET gbk COLLATE utf8;
+
+
+show variables like 'charac%';
