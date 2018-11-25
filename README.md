@@ -3,7 +3,4 @@ GIT常用操作，
 
 创建一个本地工作区  -- git init 
 
-
-。。。。。。。。。。。。。。。。。。。
-
 added this line from branch feature 1
